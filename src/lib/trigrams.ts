@@ -18,7 +18,7 @@ export const TRIGRAMS: Record<TrigramKey, Trigram> = {
     pinyin: "Qián",
     nature: "Heaven",
     description:
-      "Three unbroken lines. Qian is creative force, initiative, and the sky’s unceasing movement. In the Tianji lessons, this is the 象 of acting while the moment is still open.",
+      "Three unbroken lines. Qian is creative force, initiative, and the sky’s constant motion. In this course, it’s the image of acting while the moment is still open.",
   },
   "110": {
     key: "110",
@@ -26,7 +26,7 @@ export const TRIGRAMS: Record<TrigramKey, Trigram> = {
     pinyin: "Duì",
     nature: "Lake",
     description:
-      "Two yang lines below an open yin line. Dui is joy, speech, and exchange — a surface that reflects, not a wall that closes.",
+      "Two yang lines beneath an open yin line. Dui is joy, communication, and exchange — a surface that reflects rather than a wall that closes.",
   },
   "101": {
     key: "101",
@@ -34,7 +34,7 @@ export const TRIGRAMS: Record<TrigramKey, Trigram> = {
     pinyin: "Lí",
     nature: "Fire",
     description:
-      "Yang on the outside, yin in the middle. Li is brightness that depends on what it clings to. Clarity here is relational, not isolated.",
+      "Yang on the outside, yin in the middle. Li is brightness that depends on what it attaches to. Clarity here is relational, not isolated.",
   },
   "100": {
     key: "100",
@@ -42,7 +42,7 @@ export const TRIGRAMS: Record<TrigramKey, Trigram> = {
     pinyin: "Zhèn",
     nature: "Thunder",
     description:
-      "A single yang line stirring beneath two yin lines. Zhen is the first movement after stillness — a shock that starts a process, not the whole process.",
+      "A single yang line stirring beneath two yin lines. Zhen is the first movement after stillness — a spark that starts a process, not the entire process.",
   },
   "011": {
     key: "011",
@@ -50,7 +50,7 @@ export const TRIGRAMS: Record<TrigramKey, Trigram> = {
     pinyin: "Xùn",
     nature: "Wind",
     description:
-      "Yin at the root, yang above. Xun is entering, influencing, and following the grain of a situation rather than forcing a straight line through it.",
+      "Yin at the root, yang above. Xun is about entering, influencing, and working with the grain of a situation rather than forcing a straight line through it.",
   },
   "010": {
     key: "010",
@@ -58,7 +58,7 @@ export const TRIGRAMS: Record<TrigramKey, Trigram> = {
     pinyin: "Kǎn",
     nature: "Water",
     description:
-      "Yang hidden between two yin lines. Kan is the pit and the current: danger that is also the path, if you keep moving with the water.",
+      "Yang hidden between two yin lines. Kan is both the pit and the current: danger that is also the way forward, if you keep moving with the water.",
   },
   "001": {
     key: "001",
@@ -66,7 +66,7 @@ export const TRIGRAMS: Record<TrigramKey, Trigram> = {
     pinyin: "Gèn",
     nature: "Mountain",
     description:
-      "Yang resting on two yin lines. Gen is stopping in the right place — a boundary that holds form, not a freeze that never resumes.",
+      "Yang resting on two yin lines. Gen is stopping at the right place — a boundary that holds its shape, not a freeze that never ends.",
   },
   "000": {
     key: "000",
@@ -74,7 +74,7 @@ export const TRIGRAMS: Record<TrigramKey, Trigram> = {
     pinyin: "Kūn",
     nature: "Earth",
     description:
-      "Three broken lines. Kun is receptivity, carrying capacity, and the field that lets things grow. Without Kun, Qian has nowhere to land.",
+      "Three broken lines. Kun is receptivity, support, and the ground that lets things grow. Without Kun, Qian has nowhere to land.",
   },
 };
 

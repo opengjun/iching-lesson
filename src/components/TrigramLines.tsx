@@ -8,9 +8,9 @@ type TrigramLinesProps = {
 };
 
 const sizeMap = {
-  sm: { gap: "gap-2", bar: "h-2", width: "w-28" },
-  md: { gap: "gap-3", bar: "h-2.5", width: "w-36" },
-  lg: { gap: "gap-4", bar: "h-3", width: "w-44" },
+  sm: { gap: "gap-5", bar: "h-2.5", width: "w-20" },
+  md: { gap: "gap-7", bar: "h-3.5", width: "w-28" },
+  lg: { gap: "gap-9", bar: "h-5", width: "w-40" },
 };
 
 export function TrigramLines({
@@ -23,16 +23,19 @@ export function TrigramLines({
   const names = ["Bottom", "Middle", "Top"];
 
   return (
-    <div className={`flex flex-col-reverse ${s.gap}`} aria-hidden={!labels}>
+    <div
+      className={`flex flex-col-reverse ${s.gap} ${labels ? "pl-16" : ""}`}
+      aria-hidden={!labels}
+    >
       {lines.map((line, index) => (
-        <div key={index} className="flex items-center gap-3">
+        <div key={index} className={`relative flex items-center ${s.width}`}>
           {labels ? (
-            <span className="w-14 text-right text-[11px] uppercase tracking-[0.18em] text-stone-500">
+            <span className="absolute right-full mr-4 whitespace-nowrap text-[10px] uppercase tracking-[0.18em] text-stone-500">
               {names[index]}
             </span>
           ) : null}
           <div
-            className={`flex ${s.width} items-center justify-between transition-all duration-700 ease-in-out ${
+            className={`flex w-full items-center justify-between transition-all duration-700 ease-in-out ${
               changingIndex === index ? "scale-y-110" : "scale-y-100"
             }`}
           >

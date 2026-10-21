@@ -13,9 +13,9 @@ const sourceSerif = Source_Serif_4({
 });
 
 export const metadata: Metadata = {
-  title: "Lesson 1 · Lines and images",
+  title: "Lesson 1 · Lines and Images",
   description:
-    "A single-page I Ching lesson: yin and yang lines, eight trigrams, and one changing line.",
+    "A beginner-friendly introduction to the I Ching: yin and yang lines, the eight trigrams, and how one changing line shifts a reading.",
 };
 
 export default function RootLayout({
