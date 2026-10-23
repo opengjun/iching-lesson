@@ -64,10 +64,10 @@ function SectionShell({
   return (
     <section
       id={id}
-      className="flex min-h-dvh snap-start items-center justify-center px-5 py-12 sm:px-8"
+      className="flex min-h-dvh snap-start items-center justify-center px-4 pt-8 pb-24 sm:px-8 sm:pt-12 sm:pb-32"
     >
       <div className="w-full max-w-3xl">
-        <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-amber-800/80">
+        <p className="mb-3 text-[10px] uppercase tracking-[0.22em] text-amber-800/80 sm:text-[11px] sm:tracking-[0.28em]">
           {kicker}
         </p>
         {children}
@@ -127,16 +127,16 @@ export function Lesson() {
     <div className="h-dvh overflow-y-auto scroll-smooth snap-y snap-mandatory">
       <SectionShell id="hero" kicker="Lesson 1 · Lines and images">
         <div className="flex min-h-[70dvh] flex-col items-center justify-center text-center">
-          <h1 className="max-w-2xl text-balance font-serif text-4xl leading-[1.1] text-stone-900 sm:text-6xl">
+          <h1 className="max-w-2xl text-balance font-serif text-3xl leading-[1.15] text-stone-900 sm:text-6xl sm:leading-[1.1]">
             Read the Yi as an image, not a script to recite.
           </h1>
-          <p className="mt-7 max-w-xl text-pretty text-base leading-7 text-stone-600 sm:text-lg sm:leading-8">
+          <p className="mt-5 max-w-xl text-pretty text-sm leading-6 text-stone-600 sm:mt-7 sm:text-lg sm:leading-8">
             This lesson builds on the Tianji opening: each line is yin or yang,
             the eight trigrams each describe a situation, and a single changing
             line is what sets the picture in motion. Scroll down to build a
             reading yourself.
           </p>
-          <div className="mt-12 flex flex-col items-center gap-3">
+          <div className="mt-10 flex flex-col items-center gap-3 sm:mt-12">
             <span className="h-px w-12 bg-stone-300" />
             <span className="text-[10px] uppercase tracking-[0.28em] text-stone-400">
               Scroll to begin
@@ -150,13 +150,13 @@ export function Lesson() {
           <h2 className="text-balance font-serif text-2xl text-stone-900 sm:text-4xl">
             When you open the Yi, where do you start?
           </h2>
-          <p className="mt-3 max-w-xl text-pretty text-stone-600">
+          <p className="mt-3 max-w-xl text-pretty text-sm text-stone-600 sm:text-base">
             Pick the approach that feels closest to yours. There’s no score —
             just a note on where that approach tends to lead.
           </p>
-          <div className="mt-10 rounded-3xl border border-stone-200 bg-white/70 p-5 shadow-[0_20px_50px_-32px_rgba(28,25,23,0.35)] sm:p-7">
+          <div className="mt-6 rounded-3xl border border-stone-200 bg-white/70 p-4 shadow-[0_20px_50px_-32px_rgba(28,25,23,0.35)] sm:mt-10 sm:p-7">
             {question ? (
-              <p className="border-l-2 border-amber-800/40 pl-5 text-lg leading-8 text-stone-800">
+              <p className="border-l-2 border-amber-800/40 pl-4 text-base leading-7 text-stone-800 sm:pl-5 sm:text-lg sm:leading-8">
                 {question.feedback}
               </p>
             ) : (
@@ -166,7 +166,7 @@ export function Lesson() {
                     key={item.id}
                     type="button"
                     onClick={() => setQuestionId(item.id)}
-                    className="group flex items-center gap-4 rounded-2xl border border-stone-200 bg-stone-50 px-5 py-4 text-left text-stone-800 transition hover:border-amber-800/40 hover:bg-amber-50"
+                    className="group flex items-center gap-3 rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3.5 text-left text-sm text-stone-800 transition hover:border-amber-800/40 hover:bg-amber-50 sm:gap-4 sm:px-5 sm:py-4 sm:text-base"
                   >
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-stone-300 text-xs text-stone-500 transition group-hover:border-amber-800/40 group-hover:text-amber-900">
                       {index + 1}
@@ -188,8 +188,8 @@ export function Lesson() {
           Trigrams are read from the bottom up. Toggle the middle and top lines,
           then see which of the eight names the three lines form.
         </p>
-        <div className="mt-8 grid gap-8 md:grid-cols-[auto_1fr] md:items-center">
-          <div className="flex flex-col items-center gap-7">
+        <div className="mt-6 grid gap-6 sm:mt-8 sm:gap-8 md:grid-cols-[auto_1fr] md:items-center">
+          <div className="flex flex-col items-center gap-5 sm:gap-7">
             <TrigramLines lines={lines} size="lg" labels />
             <div className="grid w-full max-w-xs gap-3">
               <LineToggle
@@ -204,18 +204,18 @@ export function Lesson() {
               />
             </div>
           </div>
-          <div className="rounded-3xl border border-stone-200 bg-white/70 p-6 sm:p-7">
+          <div className="rounded-3xl border border-stone-200 bg-white/70 p-5 sm:p-7">
             <p className="text-[10px] uppercase tracking-[0.24em] text-amber-800/80">
               Your trigram
             </p>
-            <p className="mt-2 font-serif text-4xl text-stone-900">
+            <p className="mt-2 font-serif text-3xl text-stone-900 sm:text-4xl">
               {trigram.name}{" "}
-              <span className="text-2xl text-stone-500">{trigram.pinyin}</span>
+              <span className="text-xl text-stone-500 sm:text-2xl">{trigram.pinyin}</span>
             </p>
-            <p className="mt-1 text-sm uppercase tracking-[0.18em] text-stone-500">
+            <p className="mt-1 text-xs uppercase tracking-[0.18em] text-stone-500 sm:text-sm">
               {trigram.nature}
             </p>
-            <p className="mt-4 leading-7 text-stone-700">{trigram.description}</p>
+            <p className="mt-3 text-sm leading-6 text-stone-700 sm:mt-4 sm:text-base sm:leading-7">{trigram.description}</p>
           </div>
         </div>
       </SectionShell>
@@ -228,7 +228,7 @@ export function Lesson() {
           Change (变易, biànyì) isn’t about starting over. One line flips, and the
           image becomes one of the other eight.
         </p>
-        <div className="mt-7 flex flex-col gap-5">
+        <div className="mt-5 flex flex-col gap-4 sm:mt-7 sm:gap-5">
           <button
             type="button"
             onClick={letOneLineChange}
@@ -236,7 +236,7 @@ export function Lesson() {
           >
             Change one line
           </button>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-4 md:flex-row">
             <ComparisonCard title="Before" trigramName={trigram}>
               <TrigramLines lines={lines} size="sm" />
             </ComparisonCard>
@@ -265,7 +265,7 @@ export function Lesson() {
           Choose a scenario, then pick Qian or Kun. The note explains the image
           you chose — it isn’t a pass or fail.
         </p>
-        <div className="mt-5 grid grid-cols-2 gap-4">
+        <div className="mt-4 flex flex-col gap-3 sm:mt-5 md:flex-row md:gap-4">
           <TrigramChoiceCard
             title="乾 Qian"
             subtitle="Heaven · creative energy"
@@ -292,25 +292,25 @@ export function Lesson() {
                 setScenarioId(item.id);
                 setChosenTrigram(null);
               }}
-              className={`rounded-xl border px-4 py-4 text-left transition ${
+              className={`rounded-xl border px-4 py-3.5 text-left transition sm:py-4 ${
                 scenarioId === item.id
                   ? "border-amber-800 bg-amber-50"
                   : "border-stone-200 bg-white/80 hover:border-amber-800/40"
               }`}
             >
-              <p className="font-medium text-stone-900">{item.title}</p>
-              <p className="mt-2 text-sm leading-6 text-stone-600">
+              <p className="text-sm font-medium text-stone-900 sm:text-base">{item.title}</p>
+              <p className="mt-1.5 text-sm leading-6 text-stone-600 sm:mt-2">
                 {item.prompt}
               </p>
             </button>
           ))}
         </div>
         {pairingFeedback ? (
-          <p className="mt-5 rounded-3xl border border-stone-200 bg-white/70 p-5 leading-7 text-stone-800">
+          <p className="mt-4 rounded-3xl border border-stone-200 bg-white/70 p-4 text-sm leading-6 text-stone-800 sm:mt-5 sm:p-5 sm:text-base sm:leading-7">
             {pairingFeedback}
           </p>
         ) : (
-          <p className="mt-5 text-sm text-stone-500">
+          <p className="mt-4 text-sm text-stone-500 sm:mt-5">
             {scenarioId
               ? "Now choose Qian or Kun."
               : "Choose a scenario to begin."}
@@ -322,15 +322,15 @@ export function Lesson() {
         <h2 className="text-balance font-serif text-2xl text-stone-900 sm:text-4xl">
           Three ideas to take with you
         </h2>
-        <div className="mt-8 grid gap-6 md:grid-cols-[1.15fr_0.85fr] md:items-start">
+        <div className="mt-6 grid gap-5 sm:mt-8 sm:gap-6 md:grid-cols-[1.15fr_0.85fr] md:items-start">
           <ol className="divide-y divide-stone-200 overflow-hidden rounded-3xl border border-stone-200 bg-white/70">
             {[
               "Start with the image. The written name is just a label for a picture you can test.",
               "The eight trigrams are three lines read from the bottom up. Broken and unbroken lines are enough to describe a whole situation.",
               "Change happens one line at a time. Flip a single line and you get a different trigram — while Qian and Kun remain the two poles every later hexagram builds on.",
             ].map((item, index) => (
-              <li key={item} className="flex gap-4 px-5 py-4 text-stone-800">
-                <span className="font-serif text-xl text-amber-800">
+              <li key={item} className="flex gap-3 px-4 py-3.5 text-stone-800 sm:gap-4 sm:px-5 sm:py-4">
+                <span className="font-serif text-lg text-amber-800 sm:text-xl">
                   {index + 1}
                 </span>
                 <span className="pt-0.5 text-sm leading-6 sm:text-base sm:leading-7">
@@ -341,7 +341,7 @@ export function Lesson() {
           </ol>
           <form
             onSubmit={handleContinue}
-            className="flex flex-col gap-3 rounded-3xl border border-stone-200 bg-white/70 p-5"
+            className="flex flex-col gap-3 rounded-3xl border border-stone-200 bg-white/70 p-4 sm:p-5"
           >
             <label
               className="text-[10px] uppercase tracking-[0.24em] text-stone-500"
@@ -425,24 +425,24 @@ function ComparisonCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-full flex-col rounded-3xl border border-stone-200 bg-white/70 p-5 text-center">
+    <div className="flex w-full flex-col rounded-3xl border border-stone-200 bg-white/70 p-4 text-center sm:p-5 md:flex-1">
       <p className="text-[10px] uppercase tracking-[0.24em] text-stone-500">
         {title}
       </p>
       {trigramName ? (
         <>
-          <p className="mt-2 font-serif text-2xl text-stone-900">
+          <p className="mt-2 font-serif text-xl text-stone-900 sm:text-2xl">
             {trigramName.name}{" "}
-            <span className="text-base text-stone-500">
+            <span className="text-sm text-stone-500 sm:text-base">
               {trigramName.pinyin}
             </span>
           </p>
-          <div className="mt-5 flex flex-1 items-center justify-center">
+          <div className="mt-4 flex flex-1 items-center justify-center sm:mt-5">
             {children}
           </div>
         </>
       ) : (
-        <p className="mt-5 flex flex-1 items-center justify-center px-2 text-sm leading-6 text-stone-500">
+        <p className="mt-4 flex flex-1 items-center justify-center px-2 text-sm leading-6 text-stone-500 sm:mt-5">
           {empty}
         </p>
       )}
@@ -470,15 +470,15 @@ function TrigramChoiceCard({
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className={`flex h-full flex-col items-center rounded-3xl border p-5 text-center transition ${
+      className={`flex w-full flex-col items-center rounded-3xl border p-4 text-center transition sm:p-5 md:flex-1 ${
         selected
           ? "border-amber-800 bg-amber-50"
           : "border-stone-200 bg-white/70 hover:border-amber-800/40"
       } ${disabled ? "cursor-not-allowed opacity-60" : ""}`}
     >
-      <p className="font-serif text-2xl text-stone-900">{title}</p>
+      <p className="font-serif text-xl text-stone-900 sm:text-2xl">{title}</p>
       <p className="mt-1 text-sm text-stone-500">{subtitle}</p>
-      <div className="mt-5 flex flex-1 items-center justify-center">
+      <div className="mt-4 flex flex-1 items-center justify-center sm:mt-5">
         <TrigramLines lines={lines} size="sm" />
       </div>
     </button>

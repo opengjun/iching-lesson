@@ -10,7 +10,7 @@ type TrigramLinesProps = {
 const sizeMap = {
   sm: { gap: "gap-5", bar: "h-2.5", width: "w-20" },
   md: { gap: "gap-7", bar: "h-3.5", width: "w-28" },
-  lg: { gap: "gap-9", bar: "h-5", width: "w-40" },
+  lg: { gap: "gap-7 sm:gap-9", bar: "h-4 sm:h-5", width: "w-32 sm:w-40" },
 };
 
 export function TrigramLines({
@@ -24,7 +24,7 @@ export function TrigramLines({
 
   return (
     <div
-      className={`flex flex-col-reverse ${s.gap} ${labels ? "pl-16" : ""}`}
+      className={`flex flex-col-reverse ${s.gap} ${labels ? "pl-14 sm:pl-16" : ""}`}
       aria-hidden={!labels}
     >
       {lines.map((line, index) => (
