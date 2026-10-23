@@ -2,6 +2,7 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import { DEFAULT_LINES, flipLine, getTrigram, type Line } from "@/lib/trigrams";
+import { supabase } from "@/lib/supabase";
 import { TrigramLines } from "@/components/TrigramLines";
 
 const QUESTIONS = [
@@ -88,7 +89,9 @@ export function Lesson() {
     null,
   );
   const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [submitState, setSubmitState] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
 
   const trigram = useMemo(() => getTrigram(lines), [lines]);
   const afterTrigram = useMemo(
@@ -118,9 +121,25 @@ export function Lesson() {
     setChangedLines(next);
   }
 
-  function handleContinue(event: FormEvent<HTMLFormElement>) {
+  async function handleContinue(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSubmitted(true);
+
+    if (submitState === "submitting" || submitState === "success") {
+      return;
+    }
+
+    setSubmitState("submitting");
+
+    const { error } = await supabase
+      .from("lesson_signups")
+      .insert({ email: email.trim() });
+
+    if (error) {
+      setSubmitState("error");
+      return;
+    }
+
+    setSubmitState("success");
   }
 
   return (
@@ -356,18 +375,31 @@ export function Lesson() {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               placeholder="you@example.com"
-              className="h-11 w-full rounded-full border border-stone-300 bg-white px-5 text-stone-900 outline-none ring-amber-800/30 placeholder:text-stone-400 focus:ring-2"
+              disabled={
+                submitState === "submitting" || submitState === "success"
+              }
+              className="h-11 w-full rounded-full border border-stone-300 bg-white px-5 text-stone-900 outline-none ring-amber-800/30 placeholder:text-stone-400 focus:ring-2 disabled:opacity-60"
             />
             <button
               type="submit"
-              className="h-11 w-full rounded-full bg-stone-900 px-6 text-sm text-amber-50 transition hover:bg-stone-700"
+              disabled={
+                submitState === "submitting" || submitState === "success"
+              }
+              className="h-11 w-full rounded-full bg-stone-900 px-6 text-sm text-amber-50 transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Continue to Lesson 2
+              {submitState === "submitting"
+                ? "Saving..."
+                : "Continue to Lesson 2"}
             </button>
-            {submitted ? (
+            {submitState === "success" ? (
               <p className="mt-1 text-sm leading-6 text-stone-600">
                 You’re all set for the next session. Lesson 2 moves on to
                 hexagrams — two trigrams stacked, still read as an image.
+              </p>
+            ) : null}
+            {submitState === "error" ? (
+              <p className="mt-1 text-sm leading-6 text-red-700">
+                Something went wrong. Please try again.
               </p>
             ) : null}
           </form>
