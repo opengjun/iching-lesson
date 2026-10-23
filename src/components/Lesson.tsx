@@ -1,8 +1,9 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { DEFAULT_LINES, flipLine, getTrigram, type Line } from "@/lib/trigrams";
 import { supabase } from "@/lib/supabase";
+import { SiteFooter } from "@/components/SiteFooter";
 import { TrigramLines } from "@/components/TrigramLines";
 
 const QUESTIONS = [
@@ -92,6 +93,16 @@ export function Lesson() {
   const [submitState, setSubmitState] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
+  const summaryScrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (submitState === "success" || submitState === "error") {
+      summaryScrollRef.current?.scrollTo({
+        top: summaryScrollRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [submitState]);
 
   const trigram = useMemo(() => getTrigram(lines), [lines]);
   const afterTrigram = useMemo(
@@ -337,80 +348,94 @@ export function Lesson() {
         )}
       </SectionShell>
 
-      <SectionShell id="summary" kicker="Section 6 · Carry this forward">
-        <h2 className="text-balance font-serif text-2xl text-stone-900 sm:text-4xl">
-          Three ideas to take with you
-        </h2>
-        <div className="mt-6 grid gap-5 sm:mt-8 sm:gap-6 md:grid-cols-[1.15fr_0.85fr] md:items-start">
-          <ol className="divide-y divide-stone-200 overflow-hidden rounded-3xl border border-stone-200 bg-white/70">
-            {[
-              "Start with the image. The written name is just a label for a picture you can test.",
-              "The eight trigrams are three lines read from the bottom up. Broken and unbroken lines are enough to describe a whole situation.",
-              "Change happens one line at a time. Flip a single line and you get a different trigram — while Qian and Kun remain the two poles every later hexagram builds on.",
-            ].map((item, index) => (
-              <li key={item} className="flex gap-3 px-4 py-3.5 text-stone-800 sm:gap-4 sm:px-5 sm:py-4">
-                <span className="font-serif text-lg text-amber-800 sm:text-xl">
-                  {index + 1}
-                </span>
-                <span className="pt-0.5 text-sm leading-6 sm:text-base sm:leading-7">
-                  {item}
-                </span>
-              </li>
-            ))}
-          </ol>
-          <form
-            onSubmit={handleContinue}
-            className="flex flex-col gap-3 rounded-3xl border border-stone-200 bg-white/70 p-4 sm:p-5"
-          >
-            <label
-              className="text-[10px] uppercase tracking-[0.24em] text-stone-500"
-              htmlFor="email"
-            >
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@example.com"
-              disabled={
-                submitState === "submitting" || submitState === "success"
-              }
-              className="h-11 w-full rounded-full border border-stone-300 bg-white px-5 text-stone-900 outline-none ring-amber-800/30 placeholder:text-stone-400 focus:ring-2 disabled:opacity-60"
-            />
-            <button
-              type="submit"
-              disabled={
-                submitState === "submitting" || submitState === "success"
-              }
-              className="h-12 w-full rounded-full bg-stone-900 px-6 text-sm font-medium text-amber-50 shadow-sm transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {submitState === "submitting"
-                ? "Submitting..."
-                : "Continue to Lesson 2"}
-            </button>
-            {submitState === "success" ? (
-              <p
-                role="status"
-                className="mt-1 rounded-xl bg-emerald-50 px-3 py-2 text-sm leading-6 text-emerald-800"
+      <section
+        id="summary"
+        className="flex h-dvh snap-start flex-col overflow-hidden pt-5 sm:pt-10"
+      >
+        <div ref={summaryScrollRef} className="min-h-0 flex-1 overflow-y-auto">
+          <div className="mx-auto flex min-h-full w-full max-w-3xl flex-col justify-center px-4 py-2 sm:px-8 sm:py-6">
+            <p className="text-[10px] uppercase tracking-[0.28em] text-stone-500">
+              Section 6 · Carry this forward
+            </p>
+            <h2 className="mt-2 text-balance font-serif text-2xl text-stone-900 sm:mt-3 sm:text-4xl">
+              Three ideas to take with you
+            </h2>
+            <div className="mt-3 grid gap-3 sm:mt-6 sm:gap-6 md:grid-cols-[1.15fr_0.85fr] md:items-start">
+              <ol className="divide-y divide-stone-200 overflow-hidden rounded-3xl border border-stone-200 bg-white/70">
+                {[
+                  "Start with the image. The written name is just a label for a picture you can test.",
+                  "The eight trigrams are three lines read from the bottom up. Broken and unbroken lines are enough to describe a whole situation.",
+                  "Change happens one line at a time. Flip a single line and you get a different trigram — while Qian and Kun remain the two poles every later hexagram builds on.",
+                ].map((item, index) => (
+                  <li
+                    key={item}
+                    className="flex gap-3 px-4 py-2.5 text-stone-800 sm:gap-4 sm:px-5 sm:py-4"
+                  >
+                    <span className="font-serif text-lg text-amber-800 sm:text-xl">
+                      {index + 1}
+                    </span>
+                    <span className="pt-0.5 text-sm leading-5 text-stone-800 sm:text-base sm:leading-7">
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+              <form
+                onSubmit={handleContinue}
+                className="flex flex-col gap-2 rounded-3xl border border-stone-200 bg-white/70 p-3.5 sm:gap-3 sm:p-5"
               >
-                You’re all set for the next session. Lesson 2 moves on to
-                hexagrams — two trigrams stacked, still read as an image.
-              </p>
-            ) : null}
-            {submitState === "error" ? (
-              <p
-                role="alert"
-                className="mt-1 rounded-xl bg-red-50 px-3 py-2 text-sm leading-6 text-red-700"
-              >
-                Something went wrong. Please try again.
-              </p>
-            ) : null}
-          </form>
+                <label
+                  className="text-[10px] uppercase tracking-[0.24em] text-stone-500"
+                  htmlFor="email"
+                >
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  placeholder="you@example.com"
+                  disabled={
+                    submitState === "submitting" || submitState === "success"
+                  }
+                  className="h-11 w-full rounded-full border border-stone-300 bg-white px-5 text-stone-900 outline-none ring-amber-800/30 placeholder:text-stone-400 focus:ring-2 disabled:opacity-60"
+                />
+                <button
+                  type="submit"
+                  disabled={
+                    submitState === "submitting" || submitState === "success"
+                  }
+                  className="h-12 w-full rounded-full bg-stone-900 px-6 text-sm font-medium text-amber-50 shadow-sm transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {submitState === "submitting"
+                    ? "Submitting..."
+                    : "Continue to Lesson 2"}
+                </button>
+                {submitState === "success" ? (
+                  <p
+                    role="status"
+                    className="mt-1 rounded-xl bg-emerald-50 px-3 py-2 text-sm leading-6 text-emerald-800"
+                  >
+                    You’re all set for the next session. Lesson 2 moves on to
+                    hexagrams — two trigrams stacked, still read as an image.
+                  </p>
+                ) : null}
+                {submitState === "error" ? (
+                  <p
+                    role="alert"
+                    className="mt-1 rounded-xl bg-red-50 px-3 py-2 text-sm leading-6 text-red-700"
+                  >
+                    Something went wrong. Please try again.
+                  </p>
+                ) : null}
+              </form>
+            </div>
+          </div>
         </div>
-      </SectionShell>
+        <SiteFooter compact />
+      </section>
     </div>
   );
 }

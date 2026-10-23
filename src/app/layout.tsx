@@ -23,8 +23,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Translation extensions can mutate the DOM before hydration and trigger
+  // dev-only hydration warnings. Keep translation available in production.
+  const isDevelopment = process.env.NODE_ENV === "development";
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      translate={isDevelopment ? "no" : undefined}
+      suppressHydrationWarning
+    >
       <body
         className={`${geistSans.variable} ${sourceSerif.variable} min-h-dvh bg-stone-100 font-sans text-stone-900 antialiased`}
       >
