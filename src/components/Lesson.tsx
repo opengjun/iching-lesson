@@ -385,20 +385,26 @@ export function Lesson() {
               disabled={
                 submitState === "submitting" || submitState === "success"
               }
-              className="h-11 w-full rounded-full bg-stone-900 px-6 text-sm text-amber-50 transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-60"
+              className="h-12 w-full rounded-full bg-stone-900 px-6 text-sm font-medium text-amber-50 shadow-sm transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {submitState === "submitting"
-                ? "Saving..."
+                ? "Submitting..."
                 : "Continue to Lesson 2"}
             </button>
             {submitState === "success" ? (
-              <p className="mt-1 text-sm leading-6 text-stone-600">
+              <p
+                role="status"
+                className="mt-1 rounded-xl bg-emerald-50 px-3 py-2 text-sm leading-6 text-emerald-800"
+              >
                 You’re all set for the next session. Lesson 2 moves on to
                 hexagrams — two trigrams stacked, still read as an image.
               </p>
             ) : null}
             {submitState === "error" ? (
-              <p className="mt-1 text-sm leading-6 text-red-700">
+              <p
+                role="alert"
+                className="mt-1 rounded-xl bg-red-50 px-3 py-2 text-sm leading-6 text-red-700"
+              >
                 Something went wrong. Please try again.
               </p>
             ) : null}
