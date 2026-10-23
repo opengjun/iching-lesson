@@ -2,7 +2,7 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import { DEFAULT_LINES, flipLine, getTrigram, type Line } from "@/lib/trigrams";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import { TrigramLines } from "@/components/TrigramLines";
 
 const QUESTIONS = [
@@ -130,9 +130,15 @@ export function Lesson() {
 
     setSubmitState("submitting");
 
-    const { error } = await supabase
-      .from("lesson_signups")
-      .insert({ email: email.trim() });
+    let error: unknown = null;
+    try {
+      ({ error } = await getSupabase()
+        .from("lesson_signups")
+        .insert({ email: email.trim() }));
+    } catch (err) {
+      console.error(err);
+      error = err;
+    }
 
     if (error) {
       setSubmitState("error");
