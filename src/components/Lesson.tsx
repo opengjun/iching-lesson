@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DEFAULT_LINES, flipLine, getTrigram, type Line } from "@/lib/trigrams";
 import { SiteFooter } from "@/components/SiteFooter";
 import { TrigramLines } from "@/components/TrigramLines";
@@ -91,6 +91,20 @@ export function Lesson() {
     null,
   );
   const [email, setEmail] = useState("");
+  const [notice, setNotice] = useState<string | null>(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("notice") !== "unlock") return;
+    setNotice("Please unlock the full course first.");
+    window.history.replaceState(null, "", window.location.pathname);
+  }, []);
+
+  useEffect(() => {
+    if (!notice) return;
+    const timer = window.setTimeout(() => setNotice(null), 6000);
+    return () => window.clearTimeout(timer);
+  }, [notice]);
 
   const trigram = useMemo(() => getTrigram(lines), [lines]);
   const afterTrigram = useMemo(
@@ -131,6 +145,22 @@ export function Lesson() {
 
   return (
     <div className="h-dvh overflow-y-auto scroll-smooth snap-y snap-mandatory">
+      {notice ? (
+        <div
+          role="alert"
+          className="fixed bottom-20 left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-md -translate-x-1/2 items-start gap-3 rounded-2xl border border-amber-800/20 bg-amber-50 px-4 py-3 text-sm leading-5 text-stone-800 shadow-[0_18px_40px_-24px_rgba(28,25,23,0.45)]"
+        >
+          <p className="flex-1">{notice}</p>
+          <button
+            type="button"
+            onClick={() => setNotice(null)}
+            aria-label="Dismiss notice"
+            className="-mr-1 -mt-0.5 text-base leading-none text-stone-500 transition hover:text-stone-900"
+          >
+            ×
+          </button>
+        </div>
+      ) : null}
       <SectionShell id="hero" kicker="Lesson 1 · Lines and images">
         <div className="flex min-h-[70dvh] flex-col items-center justify-center text-center">
           <h1 className="max-w-2xl text-balance font-serif text-3xl leading-[1.15] text-stone-900 sm:text-6xl sm:leading-[1.1]">

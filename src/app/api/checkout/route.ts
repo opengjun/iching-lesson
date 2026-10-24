@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Invalid product" }, { status: 400 });
   }
 
-  const apiKey = process.env.CREEM_API_KEY;
+  const apiKey = process.env.CREEM_API_KEY?.trim();
 
   if (!apiKey) {
     return NextResponse.json(
@@ -21,9 +21,11 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const testMode = false;
+
   const checkout = Checkout({
     apiKey,
-    testMode: false,
+    testMode,
     defaultSuccessUrl: `${request.nextUrl.origin}/billing/success`,
   });
 

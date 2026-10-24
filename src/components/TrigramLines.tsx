@@ -3,11 +3,13 @@ import type { Line } from "@/lib/trigrams";
 type TrigramLinesProps = {
   lines: readonly Line[];
   changingIndex?: number | null;
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "tight" | "sm" | "md" | "lg";
   labels?: boolean;
 };
 
 const sizeMap = {
+  xs: { gap: "gap-2", bar: "h-1.5", width: "w-14" },
+  tight: { gap: "gap-3", bar: "h-2", width: "w-20" },
   sm: { gap: "gap-5", bar: "h-2.5", width: "w-20" },
   md: { gap: "gap-7", bar: "h-3.5", width: "w-28" },
   lg: { gap: "gap-7 sm:gap-9", bar: "h-4 sm:h-5", width: "w-32 sm:w-40" },
