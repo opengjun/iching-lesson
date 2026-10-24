@@ -1,10 +1,11 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { DEFAULT_LINES, flipLine, getTrigram, type Line } from "@/lib/trigrams";
-import { supabase } from "@/lib/supabase";
 import { SiteFooter } from "@/components/SiteFooter";
 import { TrigramLines } from "@/components/TrigramLines";
+
+const CREEM_PRODUCT_ID = "prod_5fA1D4dTnToVhrAQR84LnO";
 
 const QUESTIONS = [
   {
@@ -90,19 +91,6 @@ export function Lesson() {
     null,
   );
   const [email, setEmail] = useState("");
-  const [submitState, setSubmitState] = useState<
-    "idle" | "submitting" | "success" | "error"
-  >("idle");
-  const summaryScrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (submitState === "success" || submitState === "error") {
-      summaryScrollRef.current?.scrollTo({
-        top: summaryScrollRef.current.scrollHeight,
-        behavior: "smooth",
-      });
-    }
-  }, [submitState]);
 
   const trigram = useMemo(() => getTrigram(lines), [lines]);
   const afterTrigram = useMemo(
@@ -113,6 +101,15 @@ export function Lesson() {
   const scenario = SCENARIOS.find((item) => item.id === scenarioId);
   const pairingFeedback =
     scenario && chosenTrigram ? scenario[chosenTrigram] : null;
+
+  const checkoutHref = useMemo(() => {
+    const params = new URLSearchParams({ productId: CREEM_PRODUCT_ID });
+    const trimmedEmail = email.trim();
+    if (trimmedEmail) {
+      params.set("customer", JSON.stringify({ email: trimmedEmail }));
+    }
+    return `/api/checkout?${params.toString()}`;
+  }, [email]);
 
   function setUpperLine(index: 1 | 2, value: Line) {
     setLines((current) => {
@@ -130,27 +127,6 @@ export function Lesson() {
     next[index] = flipLine(next[index]);
     setChangingIndex(index);
     setChangedLines(next);
-  }
-
-  async function handleContinue(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    if (submitState === "submitting" || submitState === "success") {
-      return;
-    }
-
-    setSubmitState("submitting");
-
-    const { error } = await supabase
-      .from("lesson_signups")
-      .insert({ email: email.trim() });
-
-    if (error) {
-      setSubmitState("error");
-      return;
-    }
-
-    setSubmitState("success");
   }
 
   return (
@@ -352,8 +328,8 @@ export function Lesson() {
         id="summary"
         className="flex h-dvh snap-start flex-col overflow-hidden pt-5 sm:pt-10"
       >
-        <div ref={summaryScrollRef} className="min-h-0 flex-1 overflow-y-auto">
-          <div className="mx-auto flex min-h-full w-full max-w-3xl flex-col justify-center px-4 py-2 sm:px-8 sm:py-6">
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="mx-auto flex min-h-full w-full max-w-3xl flex-col justify-center px-4 py-1.5 sm:px-8 sm:py-6">
             <p className="text-[10px] uppercase tracking-[0.28em] text-stone-500">
               Section 6 · Carry this forward
             </p>
@@ -369,7 +345,7 @@ export function Lesson() {
                 ].map((item, index) => (
                   <li
                     key={item}
-                    className="flex gap-3 px-4 py-2.5 text-stone-800 sm:gap-4 sm:px-5 sm:py-4"
+                    className="flex gap-3 px-4 py-2 text-stone-800 sm:gap-4 sm:px-5 sm:py-4"
                   >
                     <span className="font-serif text-lg text-amber-800 sm:text-xl">
                       {index + 1}
@@ -380,10 +356,7 @@ export function Lesson() {
                   </li>
                 ))}
               </ol>
-              <form
-                onSubmit={handleContinue}
-                className="flex flex-col gap-2 rounded-3xl border border-stone-200 bg-white/70 p-3.5 sm:gap-3 sm:p-5"
-              >
+              <div className="flex flex-col gap-2 rounded-3xl border border-stone-200 bg-white/70 p-3 sm:gap-3 sm:p-5">
                 <label
                   className="text-[10px] uppercase tracking-[0.24em] text-stone-500"
                   htmlFor="email"
@@ -393,44 +366,21 @@ export function Lesson() {
                 <input
                   id="email"
                   type="email"
-                  required
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   placeholder="you@example.com"
-                  disabled={
-                    submitState === "submitting" || submitState === "success"
-                  }
-                  className="h-11 w-full rounded-full border border-stone-300 bg-white px-5 text-stone-900 outline-none ring-amber-800/30 placeholder:text-stone-400 focus:ring-2 disabled:opacity-60"
+                  className="h-11 w-full rounded-full border border-stone-300 bg-white px-5 text-stone-900 outline-none ring-amber-800/30 placeholder:text-stone-400 focus:ring-2"
                 />
-                <button
-                  type="submit"
-                  disabled={
-                    submitState === "submitting" || submitState === "success"
-                  }
-                  className="h-12 w-full rounded-full bg-stone-900 px-6 text-sm font-medium text-amber-50 shadow-sm transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-60"
+                <a
+                  href={checkoutHref}
+                  className="flex h-12 w-full items-center justify-center rounded-full bg-stone-900 px-6 text-sm font-medium text-amber-50 shadow-sm transition hover:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-500 focus-visible:ring-offset-2"
                 >
-                  {submitState === "submitting"
-                    ? "Submitting..."
-                    : "Continue to Lesson 2"}
-                </button>
-                {submitState === "success" ? (
-                  <p
-                    role="status"
-                    className="mt-1 rounded-xl bg-emerald-50 px-3 py-2 text-sm leading-6 text-emerald-800"
-                  >
-                    You’re all set for the next session. Lesson 2 moves on to
-                    hexagrams — two trigrams stacked, still read as an image.
-                  </p>
-                ) : null}
-                {submitState === "error" ? (
-                  <p
-                    role="alert"
-                    className="mt-1 rounded-xl bg-red-50 px-3 py-2 text-sm leading-6 text-red-700"
-                  >
-                    Something went wrong. Please try again.
-                  </p>
-                ) : null}
-              </form>
+                  Unlock Full Course - $19.99
+                </a>
+                <p className="text-center text-[11px] leading-4 text-stone-500">
+                  One-time payment. Instant access.
+                </p>
+              </div>
             </div>
           </div>
         </div>
